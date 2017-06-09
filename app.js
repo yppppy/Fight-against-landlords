@@ -11,6 +11,8 @@ var db = mongoose.connect('mongodb://localhost/doudizhu');
 const index = require('./routes/index')
 const users = require('./routes/users')
 const hall = require('./routes/hall')
+const room = require('./routes/room')
+
 var  cors=require('koa-cors');
 var session = require('koa-generic-session');
 
@@ -46,5 +48,6 @@ app.use(async (ctx, next) => {
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(hall.routes(), hall.allowedMethods())
+app.use(room.routes(), room.allowedMethods())
 
 module.exports = app

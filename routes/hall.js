@@ -45,7 +45,14 @@ router.get('/getRoomList', async function (ctx, next) {
     }
   }
   console.log(roomList);
-  ctx.body=roomList;
+  let data=[];
+  let msg={};
+  msg.id=loginbean.id;
+  msg.nicheng=loginbean.nicheng;
+
+  data.push(roomList);
+   data.push(msg);
+  ctx.body=data;
 })
 
 router.get('/newroom', async function (ctx, next) {
@@ -67,7 +74,11 @@ router.get('/newroom', async function (ctx, next) {
   let time = '周'+dayArr[date.getDay()]+' '+((date.getHours()<10)? '0'+date.getHours():date.getHours())+":"+((date.getMinutes()<10)? '0'+date.getMinutes():date.getMinutes());
   await client.hmset('room'+roomid,'num',1,'start',0,'pwd',roompwd,'createtime',time);
   
-  ctx.body='roomid='+roomid;
+ let msg={};
+  msg.id = loginbean.id;
+  msg.nicheng = loginbean.nicheng;
+  msg.room = 'room'+roomid;
+  ctx.body=msg;
 })
 
 
