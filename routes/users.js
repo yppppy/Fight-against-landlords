@@ -12,26 +12,27 @@ router.post('/zhuce', async function (ctx, next) {
 			user.email = ctx.request.body['email'];
 			user.pwd = ctx.request.body['pwd'];
 			user.nicheng = ctx.request.body['nicheng'];
-			user.nicheng = ctx.request.body['pwd'];
-			user.nicheng = ctx.request.body['rpwd'];
-			user.role='1';
+				user.role='1';
 			user.createtime=new Date();
-			  try{
-			  	let rs = await user.save();
-			  	console.log(rs);
+			console.log(user);
+			 try{
+  	   let rs = await user.save();
+  	     ctx.status = 307;  //http重定向状态码
+	   ctx.redirect('login');  
+         	return;
 
 			  }catch(err){
 			  	let errMsg = err.message;
 			  		if(errMsg.indexOf('$emailuiq')>-1){
-				      ctx.body = 1;		//{type:0,msg:'email重复'};
+				      ctx.body = 2;		//{type:0,msg:'email重复'};
 				    }else if(errMsg.indexOf('$nichenguiq')>-1){
-				      ctx.body = 2;		//{type:0,msg:'昵称重复'};
+				      ctx.body = 3;		//{type:0,msg:'昵称重复'};
 				    }else{
 				      ctx.body = 0;		//{type:0,msg:'数据库错误'};
 				    }
 					return;
 			}
-    ctx.body = '收到参数';//res.send('收到参数');
+      ctx.body = '收到参数';//res.send('收到参数');
     
 
 })
@@ -65,7 +66,7 @@ router.post('/login', async function (ctx, next) {
 				loginbean.nicheng=rs.nicheng;
 				loginbean.role=rs.role;
 				ctx.session.loginbean=loginbean;
-				ctx.body=1;
+				ctx.body=loginbean;
 			}else{
 				ctx.body=0;
 			}

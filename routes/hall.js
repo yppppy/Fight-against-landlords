@@ -45,14 +45,18 @@ router.get('/getRoomList', async function (ctx, next) {
     }
   }
   console.log(roomList);
-  let data=[];
-  let msg={};
-  msg.id=loginbean.id;
-  msg.nicheng=loginbean.nicheng;
+  //==================================
+  // let data=[];
+  // let msg={};
+  // msg.id=loginbean.id;
+  // msg.nicheng=loginbean.nicheng;
 
-  data.push(roomList);
-   data.push(msg);
-  ctx.body=data;
+  // data.push(roomList);
+  //  data.push(msg);
+  // ctx.body=data;
+
+ctx.body=roomList;
+
 })
 
 router.get('/newroom', async function (ctx, next) {
@@ -70,6 +74,7 @@ router.get('/newroom', async function (ctx, next) {
 
   await client.lpush('room','room'+roomid);
   let roompwd = ctx.query.roompwd;
+ console.log(roompwd);
   let date = new Date();
   let time = '周'+dayArr[date.getDay()]+' '+((date.getHours()<10)? '0'+date.getHours():date.getHours())+":"+((date.getMinutes()<10)? '0'+date.getMinutes():date.getMinutes());
   await client.hmset('room'+roomid,'num',1,'start',0,'pwd',roompwd,'createtime',time);
@@ -81,5 +86,28 @@ router.get('/newroom', async function (ctx, next) {
   ctx.body=msg;
 })
 
+
+router.get('/getPwdByRoom', async function (ctx, next) {
+  let loginbean = ctx.session.loginbean;
+  console.log('loginbean:'+loginbean);
+  if(!loginbean){
+    ctx.body='登陆过期';
+    return;
+  }
+
+let room =ctx.query.room;
+  
+ 
+    let roompwd = await new Promise(function(resolve,reject){
+      client.hget(room,'pwd',function(err,rs){
+
+          resolve(rs);
+      })
+   })
+   
+  console.log(roompwd);
+  
+  ctx.body=roompwd;
+})
 
 module.exports = router;
