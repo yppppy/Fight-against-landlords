@@ -46,16 +46,16 @@ router.get('/getRoomList', async function (ctx, next) {
   }
   console.log(roomList);
   //==================================
-  // let data=[];
-  // let msg={};
-  // msg.id=loginbean.id;
-  // msg.nicheng=loginbean.nicheng;
+  let data=[];
+  let msg={};
+  msg.id=loginbean.id;
+  msg.nicheng=loginbean.nicheng;
 
-  // data.push(roomList);
-  //  data.push(msg);
-  // ctx.body=data;
+  data.push(roomList);
+   data.push(msg);
+  ctx.body=data;
 
-ctx.body=roomList;
+//ctx.body=roomList;
 
 })
 
